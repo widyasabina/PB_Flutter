@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pb_sesi4/controller/feed_controller.dart';
 import 'package:pb_sesi4/model/feed.dart';
+import 'package:provider/provider.dart';
 
 class FeedCard extends StatefulWidget {
   final Feed feed;
@@ -13,7 +15,8 @@ class FeedCard extends StatefulWidget {
 
 class _FeedCardState extends State<FeedCard> {
   // Variabel untuk menyimpan status like
-  bool isLiked = false;
+  bool isLike = false;
+  bool isBookmark = false;
   @override
   Widget build(BuildContext context) {
     const url =
@@ -42,20 +45,21 @@ class _FeedCardState extends State<FeedCard> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(
-                    isLiked
+                   onPressed: () {
+                    
+                      context.read<FeedController>().like
+                      (widget.feed);
+                    },
+                    icon: Icon(widget.feed.content.isLike
                         ? Icons.favorite
                         : Icons
                             .favorite_border, // If liked, show filled heart; else, outline
-                    color: isLiked
+                    color: widget.feed.content.isLike
                         ? Colors.red
                         : Colors.grey, // Red color for liked, grey for unliked
                   ),
-                  onPressed: () {
-                    setState(() {
-                      isLiked = !isLiked; // Toggle like status
-                    });
-                  },
+                 
+                  
                 ),
                 SizedBox(width: 16),
                 Icon(Icons.comment),
@@ -63,10 +67,25 @@ class _FeedCardState extends State<FeedCard> {
                 Icon(Icons.share),
               ],
             ),
-            trailing: Icon(Icons.bookmark_outlined),
+            trailing: 
+            IconButton(
+               onPressed: () {
+                    
+                      context.read<FeedController>().bookmark
+                      (widget.feed);
+                    },
+                    icon: Icon(widget.feed.content.isBookmark
+                        ? Icons.bookmark
+                        : Icons
+                            .bookmark_outline, // If liked, show filled heart; else, outline
+                    color: widget.feed.content.isBookmark
+                        ? Colors.black
+                        : Colors.grey, // Red color for liked, grey for unliked
+                  ),
+            )
           ),
           ListTile(
-            title: Text(widget.feed.content.Likes),
+            title: Text(widget.feed.content.likes),
             subtitle: Text(widget.feed.content.description),
           )
         ],

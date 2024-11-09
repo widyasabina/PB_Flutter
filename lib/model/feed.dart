@@ -1,8 +1,10 @@
 class Feed {
+    final int id;
     final User user;
     final Content content;
 
   Feed({
+    required this.id,
     required this.user, 
     required this.content
     });
@@ -10,13 +12,17 @@ class Feed {
 }
 class Content {
     final String image;
-    final String Likes;
+    final String likes;
     final String description;
+    bool isLike;
+    bool isBookmark;
 
   Content({
     required this.image, 
-    required this.Likes, 
-    required this.description
+    required this.likes, 
+    required this.description,
+    required this.isLike,
+    required this.isBookmark,
     });
 }
 class User {
