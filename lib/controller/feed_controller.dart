@@ -10,6 +10,7 @@ class FeedController extends ChangeNotifier {
   Feed feed(int index){
     return feeds[index];
   }
+   List<Feed> get bookmarkedFeeds => feeds.where((feed)=> feed.content.isBookmark).toList();
 
   like(Feed feed){
     feeds.firstWhere((element) => element.id == feed.id,
@@ -21,6 +22,7 @@ class FeedController extends ChangeNotifier {
     ).content.isBookmark = !feed.content.isBookmark;
     notifyListeners();
   }
+
 
   refresh(){
     feeds = FeedRepository().fetch()..shuffle();

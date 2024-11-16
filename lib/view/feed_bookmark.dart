@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pb_sesi4/controller/feed_controller.dart';
-import 'package:pb_sesi4/view/feed_bookmark.dart';
 import 'package:pb_sesi4/view/feed_card.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class FeedBookmark extends StatefulWidget {
+  const FeedBookmark({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<FeedBookmark> createState() => _FeedBookmark();
 }
 
-class _HomePageState extends State<HomePage> {
+class _FeedBookmark extends State<FeedBookmark> {
   @override
   Widget build(BuildContext context) {
     // var feedController = FeedController();
@@ -24,16 +23,7 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.w500
             ),
             ),
-             actions: [
-              IconButton(onPressed: (){
-                Navigator.of(context).push
-                (MaterialPageRoute(
-                  builder: (context) => const
-                  FeedBookmark(),
-                  ));
-
-              }, icon: const Icon(Icons.bookmark_outline)
-      )],
+             
             ),
            
       body: RefreshIndicator(
@@ -42,9 +32,9 @@ class _HomePageState extends State<HomePage> {
           controller.refresh();
         },
         child: ListView.builder(
-          itemCount: controller.length,
+          itemCount: controller.bookmarkedFeeds.length,
           itemBuilder: (context, index) => FeedCard(
-            feed: controller.feed(index),
+        feed: controller.bookmarkedFeeds[index]
             )
           ),
       )
