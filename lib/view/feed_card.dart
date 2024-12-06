@@ -41,49 +41,44 @@ class _FeedCardState extends State<FeedCard> {
           ),
           //footer
           ListTile(
-            leading: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                   onPressed: () {
-                    
-                      context.read<FeedController>().like
-                      (widget.feed);
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      context.read<FeedController>().like(widget.feed);
                     },
-                    icon: Icon(widget.feed.content.isLike
-                        ? Icons.favorite
-                        : Icons
-                            .favorite_border, // If liked, show filled heart; else, outline
-                    color: widget.feed.content.isLike
-                        ? Colors.red
-                        : Colors.grey, // Red color for liked, grey for unliked
+                    icon: Icon(
+                      widget.feed.content.isLike
+                          ? Icons.favorite
+                          : Icons
+                              .favorite_border, // If liked, show filled heart; else, outline
+                      color: widget.feed.content.isLike
+                          ? Colors.red
+                          : Colors
+                              .grey, // Red color for liked, grey for unliked
+                    ),
                   ),
-                 
-                  
+                  SizedBox(width: 16),
+                  Icon(Icons.comment),
+                  SizedBox(width: 16),
+                  Icon(Icons.share),
+                ],
+              ),
+              trailing: IconButton(
+                onPressed: () {
+                  context.read<FeedController>().bookmark(widget.feed);
+                },
+                icon: Icon(
+                  widget.feed.content.isBookmark
+                      ? Icons.bookmark
+                      : Icons
+                          .bookmark_outline, // If liked, show filled heart; else, outline
+                  color: widget.feed.content.isBookmark
+                      ? Colors.black
+                      : Colors.grey, // Red color for liked, grey for unliked
                 ),
-                SizedBox(width: 16),
-                Icon(Icons.comment),
-                SizedBox(width: 16),
-                Icon(Icons.share),
-              ],
-            ),
-            trailing: 
-            IconButton(
-               onPressed: () {
-                    
-                      context.read<FeedController>().bookmark
-                      (widget.feed);
-                    },
-                    icon: Icon(widget.feed.content.isBookmark
-                        ? Icons.bookmark
-                        : Icons
-                            .bookmark_outline, // If liked, show filled heart; else, outline
-                    color: widget.feed.content.isBookmark
-                        ? Colors.black
-                        : Colors.grey, // Red color for liked, grey for unliked
-                  ),
-            )
-          ),
+              )),
           ListTile(
             title: Text(widget.feed.content.likes),
             subtitle: Text(widget.feed.content.description),

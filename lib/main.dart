@@ -3,7 +3,6 @@ import 'package:pb_sesi4/controller/feed_controller.dart';
 import 'package:pb_sesi4/view/home_page.dart';
 import 'package:provider/provider.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -20,18 +19,15 @@ class MyApp extends StatelessWidget {
           create: (context) => FeedController(),
         )
       ],
-    
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Our App',
         theme: ThemeData(
-          
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
         ),
-        home:const HomePage(),
+        home: const HomePage(),
       ),
     );
   }
 }
-
