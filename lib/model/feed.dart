@@ -29,3 +29,4 @@ class User {
 
   User({required this.name, required this.avatar, required this.place});
 }
+
