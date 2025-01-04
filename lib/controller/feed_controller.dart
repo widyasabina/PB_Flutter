@@ -37,4 +37,10 @@ class FeedController extends ChangeNotifier {
     feeds = FeedRepository().fetch()..shuffle();
     notifyListeners();
   }
+
+  isBookmarked(Feed feed) {}
+
+  isBookmark(Feed feed) {}
+
+  isBookmarkEmpty() {}
 }

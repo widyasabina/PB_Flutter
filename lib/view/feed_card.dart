@@ -5,86 +5,94 @@ import 'package:provider/provider.dart';
 
 class FeedCard extends StatefulWidget {
   final Feed feed;
+
   const FeedCard({
     super.key,
     required this.feed,
   });
+
   @override
-  _FeedCardState createState() => _FeedCardState();
+  State<FeedCard> createState() => _FeedCardState();
 }
 
 class _FeedCardState extends State<FeedCard> {
-  // Variabel untuk menyimpan status like
-  bool isLike = false;
-  bool isBookmark = false;
   @override
   Widget build(BuildContext context) {
-    const url =
-        'https://images.pexels.com/photos/27893233/pexels-photo-27893233/free-photo-of-woman-in-shirt-photographing-with-digital-camera.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load';
+    final user = widget.feed.user;
+    final content = widget.feed.content;
+    var controller = context.read<FeedController>();
+
     return Card(
+      color: Colors.white,
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Column(
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(widget.feed.user.avatar),
+              backgroundImage: NetworkImage(user.avatar),
             ),
-            title: Text(widget.feed.user.name),
-            subtitle: Text(widget.feed.user.place),
-            trailing: Icon(Icons.more_vert),
+            title: Text(
+              user.name,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+            subtitle: Text(user.place),
+            trailing: const Icon(Icons.more_vert_outlined),
           ),
-          //content
           Image.network(
-            widget.feed.content.image,
+            content.image,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width * 0.8,
             fit: BoxFit.cover,
           ),
-          //footer
-          ListTile(
-              leading: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      context.read<FeedController>().like(widget.feed);
-                    },
-                    icon: Icon(
-                      widget.feed.content.isLike
-                          ? Icons.favorite
-                          : Icons
-                              .favorite_border, // If liked, show filled heart; else, outline
-                      color: widget.feed.content.isLike
-                          ? Colors.red
-                          : Colors
-                              .grey, // Red color for liked, grey for unliked
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Icon(Icons.comment),
-                  SizedBox(width: 16),
-                  Icon(Icons.share),
-                ],
-              ),
-              trailing: IconButton(
+          Row(
+            children: [
+              IconButton(
                 onPressed: () {
-                  context.read<FeedController>().bookmark(widget.feed);
+                  controller.like(widget.feed);
                 },
                 icon: Icon(
-                  widget.feed.content.isBookmark
-                      ? Icons.bookmark
-                      : Icons
-                          .bookmark_outline, // If liked, show filled heart; else, outline
-                  color: widget.feed.content.isBookmark
-                      ? Colors.black
-                      : Colors.grey, // Red color for liked, grey for unliked
+                    content.isLike ? Icons.favorite : Icons.favorite_outline),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.maps_ugc_rounded),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.share_outlined),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  controller.bookmark(widget.feed);
+                },
+                icon:  Icon(controller.isBookmark(widget.feed)?Icons.bookmark: Icons.bookmark_outline_outlined),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  content.likes,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-              )),
-          ListTile(
-            title: Text(widget.feed.content.likes),
-            subtitle: Text(widget.feed.content.description),
-          )
+                Text(
+                  content.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(
+                  height: 12,
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
+

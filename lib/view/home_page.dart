@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pb_sesi4/controller/feed_controller.dart';
-import 'package:pb_sesi4/view/bookmark_page.dart';
-import 'package:pb_sesi4/view/feed_card.dart';
+import 'package:pb_sesi4/controller/home_controller.dart';
+import 'package:pb_sesi4/view/feed_bookmark_page.dart';
+import 'package:pb_sesi4/view/feed_list_widget.dart';
 import 'package:pb_sesi4/view/profile_page.dart';
 import 'package:provider/provider.dart';
+
+import 'feed_bookmark_list_widget.dart';
+
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,82 +17,61 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = [
-    const HomePageContent(),
-    const BookmarkPage(),
-    const ProfilePage(),
+  final bodies = const [
+    FeedListWidget(),
+    FeedBookmarkListWidget(),
+    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final homeController = context.watch<HomeController>();
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {},
-        ),
-        centerTitle: true,
         title: const Text(
-          'Our App',
-          style: TextStyle(fontWeight: FontWeight.w500),
+          'OurApp',
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+          ),
         ),
+        leading: const Icon(Icons.menu_rounded),
         actions: [
           IconButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const BookmarkPage(),
+                builder: (context) => const FeedBookmarkPage(),
               ));
             },
             icon: const Icon(Icons.notifications_outlined),
           ),
         ],
       ),
-      body: _pages[_currentIndex],
+      body: bodies[homeController.selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
+            activeIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: '',
+            activeIcon: Icon(Icons.bookmark),
+            icon: Icon(Icons.bookmark_outline),
+            label: 'Bookmark',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: '',
+            label: 'Profile',
           ),
         ],
-      ),
-    );
-  }
-}
-
-class HomePageContent extends StatelessWidget {
-  const HomePageContent({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = context.watch<FeedController>();
-
-    return RefreshIndicator(
-      onRefresh: () async {
-        await Future.delayed(const Duration(seconds: 1));
-        controller.refresh();
-      },
-      child: ListView.builder(
-        itemCount: controller.length,
-        itemBuilder: (context, index) => FeedCard(
-          feed: controller.feed(index),
-        ),
+        currentIndex: homeController.selectedIndex,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.black,
+        onTap: (index) {
+          homeController.changeIndex(index);
+        },
       ),
     );
   }
