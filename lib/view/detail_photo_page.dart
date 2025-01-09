@@ -5,7 +5,7 @@ import '../model/data/photo.dart';
 class DetailPhotoPage extends StatelessWidget {
   final Photo photo;
 
-  const DetailPhotoPage({Key? key, required this.photo}) : super(key: key);
+  const DetailPhotoPage({super.key, required this.photo});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class DetailPhotoPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Hero animation for the photo
-            
+
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -26,24 +26,24 @@ class DetailPhotoPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-              leading: CircleAvatar(
-                backgroundImage:
-                    NetworkImage(photo.user?.profileImage?.small ?? ''),
-              ),
-              title: Text(photo.user?.username ?? ''),
-              subtitle: Text(photo.user?.firstName ?? ''),
-              trailing:  Icon(Icons.more_vert_rounded),
-            ),
-            Hero(
-              tag: photo.id ?? '',
-              child: Image.network(
-                photo.urls?.regular ?? '',
-                fit: BoxFit.cover,
-                height: 500,
-                width: double.infinity,
-              ),
-            ),
-          
+                    leading: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(photo.user?.profileImage?.small ?? ''),
+                    ),
+                    title: Text(photo.user?.username ?? ''),
+                    subtitle: Text(photo.user?.firstName ?? ''),
+                    trailing: const Icon(Icons.more_vert_rounded),
+                  ),
+                  Hero(
+                    tag: photo.id ?? '',
+                    child: Image.network(
+                      photo.urls?.regular ?? '',
+                      fit: BoxFit.cover,
+                      height: 500,
+                      width: double.infinity,
+                    ),
+                  ),
+
                   const SizedBox(height: 8),
                   // Photo likes
                   Row(
@@ -54,7 +54,8 @@ class DetailPhotoPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Text(photo.altDescription ?? '',
+                  Text(
+                    photo.altDescription ?? '',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

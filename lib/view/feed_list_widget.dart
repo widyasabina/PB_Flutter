@@ -6,9 +6,7 @@ import 'package:pb_sesi4/view/photo_card.dart';
 import 'package:provider/provider.dart';
 
 class FeedListWidget extends StatefulWidget {
-  const FeedListWidget({
-    super.key,
-  });
+  const FeedListWidget({super.key});
 
   @override
   State<FeedListWidget> createState() => _FeedListWidgetState();
@@ -17,14 +15,14 @@ class FeedListWidget extends StatefulWidget {
 class _FeedListWidgetState extends State<FeedListWidget> {
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final controller = Provider.of<PhotoController>(
         context,
         listen: false,
       );
-      controller.fetch(1); // Ganti parameter sesuai kebutuhan
+      controller.fetch(1);
     });
-    super.initState();
   }
 
   @override
@@ -34,7 +32,7 @@ class _FeedListWidgetState extends State<FeedListWidget> {
     return RefreshIndicator(
       onRefresh: () async {
         await Future.delayed(const Duration(seconds: 1));
-        controller.fetch(Random().nextInt(50)); // Mengambil data secara acak
+        controller.fetch(Random().nextInt(50));
       },
       child: controller.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -44,28 +42,47 @@ class _FeedListWidgetState extends State<FeedListWidget> {
                 final photo = controller.photos[index];
                 return GestureDetector(
                   onTap: () {
-                    // Menampilkan Bottom Sheet saat foto di klik
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Detail Foto ${photo.id}', 
-                                  style: Theme.of(context).textTheme.titleLarge),
-                              const SizedBox(height: 10),
-                              Image.network(photo.urls as String),  // Tampilkan gambar
-                              const SizedBox(height: 10),
-                              Text('Deskripsi foto...'), // Ganti dengan deskripsi atau info lainnya
-                            ],
+                        return SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Detail Foto ${photo.id}',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                const SizedBox(height: 10),
+                                photo.urls?.regular != null
+                                    ? Image.network(
+                                        photo.urls!.regular!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Center(
+                                            child: Text('Gagal memuat gambar'),
+                                          );
+                                        },
+                                      )
+                                    : const Center(
+                                        child: Text('Gambar tidak tersedia'),
+                                      ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  photo.description ??
+                                      'Tidak ada deskripsi tersedia.',
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
                     );
                   },
-                  child: PhotoCard(photo: photo),  // Card foto yang sudah ada
+                  child: PhotoCard(photo: photo),
                 );
               },
             ),

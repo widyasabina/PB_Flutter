@@ -26,6 +26,7 @@ class _FeedCardState extends State<FeedCard> {
       color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
             leading: CircleAvatar(
@@ -41,34 +42,43 @@ class _FeedCardState extends State<FeedCard> {
           Image.network(
             content.image,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.width * 0.6,
             fit: BoxFit.cover,
           ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  controller.like(widget.feed);
-                },
-                icon: Icon(
-                    content.isLike ? Icons.favorite : Icons.favorite_outline),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.maps_ugc_rounded),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.share_outlined),
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: () {
-                  controller.bookmark(widget.feed);
-                },
-                icon:  Icon(controller.isBookmark(widget.feed)?Icons.bookmark: Icons.bookmark_outline_outlined),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    controller.like(widget.feed);
+                  },
+                  icon: Icon(
+                      content.isLike ? Icons.favorite : Icons.favorite_outline),
+                ),
+                Text(
+                  content.likes,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.maps_ugc_rounded),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.share_outlined),
+                ),
+                IconButton(
+                  onPressed: () {
+                    controller.bookmark(widget.feed);
+                  },
+                  icon: Icon(controller.isBookmark(widget.feed)
+                      ? Icons.bookmark
+                      : Icons.bookmark_outline_outlined),
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -76,17 +86,11 @@ class _FeedCardState extends State<FeedCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  content.likes,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                Text(
                   content.description,
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w400),
                 ),
-                const SizedBox(
-                  height: 12,
-                )
               ],
             ),
           ),
@@ -95,4 +99,3 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 }
-

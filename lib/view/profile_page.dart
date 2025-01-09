@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 40),
             Stack(
+              alignment: Alignment.center,
               children: [
                 CircleAvatar(
-                  radius: 60,
-                  backgroundImage: NetworkImage(
+                  radius: size.width * 0.2, // Responsif
+                  backgroundImage: const NetworkImage(
                     'https://images.pexels.com/photos/28838879/pexels-photo-28838879/free-photo-of-fashionable-woman-posing-outdoors-by-gate.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
                   ),
                 ),
                 Positioned(
                   bottom: 0,
-                  right: 10,
+                  right: size.width * 0.35, // Responsif
                   child: FloatingActionButton(
                     mini: true,
                     backgroundColor: Colors.teal,
@@ -40,14 +43,14 @@ class ProfilePage extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 30),
-            ListTile(
-              leading: const Icon(Icons.star, color: Colors.black),
-              title: const Text('My Membership'),
+            _buildProfileOption(
+              icon: Icons.star,
+              title: 'My Membership',
               onTap: () {},
             ),
-            ListTile(
-              leading: const Icon(Icons.bookmark, color: Colors.black),
-              title: const Text('My Collection'),
+            _buildProfileOption(
+              icon: Icons.bookmark,
+              title: 'My Collection',
               trailing: Container(
                 padding: const EdgeInsets.all(5),
                 decoration: const BoxDecoration(
@@ -61,14 +64,30 @@ class ProfilePage extends StatelessWidget {
               ),
               onTap: () {},
             ),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('Logout'),
+            _buildProfileOption(
+              icon: Icons.logout,
+              title: 'Logout',
+              iconColor: Colors.red,
               onTap: () {},
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildProfileOption({
+    required IconData icon,
+    required String title,
+    Widget? trailing,
+    Color iconColor = Colors.black,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor),
+      title: Text(title),
+      trailing: trailing,
+      onTap: onTap,
     );
   }
 }
