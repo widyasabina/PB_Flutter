@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:pb_sesi4/controller/auth_controller.dart';
 import 'package:pb_sesi4/controller/feed_controller.dart';
 import 'package:pb_sesi4/controller/home_controller.dart';
 import 'package:pb_sesi4/controller/photo_controller.dart';
 import 'package:pb_sesi4/view/home_page.dart';
 import 'package:provider/provider.dart';
 
+import 'core/hive_storage.dart';
+
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  void initState() {
+    HiveStorage.instance.initBox();
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -25,6 +38,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => HomeController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthController(),
         ),
       ],
       child: MaterialApp(
